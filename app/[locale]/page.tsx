@@ -314,6 +314,7 @@ export default function Page({ params }: Props) {
       transition={{ duration: 0.7, delay: 0.5 }}
       viewport={{ once: true }}
     >
+      {/*test oe mande ve sa tsia*/} 
       <Contact/>
     </motion.div>
   </section>

@@ -1,6 +1,5 @@
 "use client";
 
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import { ThemeProvider } from "next-themes";
@@ -9,6 +8,7 @@ import LangueSwitcher from "@/components/ui/LangueSwitcher";
 import Link from "next/link";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
+import { navbarTexts } from "@/locales/navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,9 +24,11 @@ export default function RootLayout({
   children,
   params,
 }: {
-  children: React.ReactNode
-  params: { locale: string }
+  children: React.ReactNode;
+  params: { locale: string };
 }) {
+  const { locale } = params;
+  const t = navbarTexts[(locale as keyof typeof navbarTexts) ?? 'fr'] || navbarTexts.fr;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -45,7 +47,7 @@ export default function RootLayout({
   }, []);
 
   return (
-    <html lang={params.locale}>
+    <html lang={locale}>
       <body
        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black dark:bg-black dark:text-white transition-colors duration-300 overflow-x-hidden`}
       >
@@ -59,66 +61,58 @@ export default function RootLayout({
           {/* Titre Portfolio - Visible sur mobile et desktop */}
           <div className="flex-shrink-0">
             <h1 className={`text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-500 via-purple-600 to-pink-500 bg-clip-text text-transparent animate-pulse`}>
-              Portfolio
+              {t.brand}
             </h1>
           </div>
           
           {/* Desktop Navigation - Centré avec gestion des débordements */}
-          <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 gap-4 lg:gap-6 xl:gap-8 min-w-0 overflow-hidden">
+          <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 gap-4 lg:gap-6 xl:gap-8 min-w-0 overflow-visible">
           <Link
-            href="/accueil"
+            href="#"
             className="text-gray-500 dark:text-gray-300 hover:text-[#D5B7AD] hover:text-xl dark:hover:text-amber-400 transition text-sm lg:text-base xl:text-lg font-medium flex-shrink-0"
           >
-            Accueil
+            {t.home}
           </Link>
 
           <div className="relative group flex-shrink-0">
             <Link
-              href="/about"
+              href="#about"
               className="text-gray-500 dark:text-gray-300 hover:text-[#D5B7AD] hover:text-xl dark:hover:text-amber-400 transition text-sm lg:text-base xl:text-lg font-medium flex items-center gap-1"
             >
-              À propos
+              {t.about}
               <ChevronDown className="w-3 h-3 lg:w-4 lg:h-4 flex-shrink-0" />
             </Link>
 
-            {/* Dropdown - Amélioré pour mobile */}
-            <div className="absolute left-0 w-40 lg:w-48 bg-white dark:bg-zinc-800 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto z-50">
+            {/* Dropdown - harmonisé, fade + translation */}
+            <div className="absolute left-0 top-full pt-2 w-40 lg:w-48 bg-white dark:bg-zinc-800 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 -translate-y-1 group-hover:translate-y-0 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto z-50">
               <ul className="py-2">
                 <li>
                   <Link
-                    href="/about/skills"
+                    href="#parcours"
                     className="block px-3 lg:px-4 py-2 text-xs lg:text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 hover:text-[#D5B7AD] hover:text-xl dark:hover:text-amber-400 dark:hover:bg-zinc-700"
                   >
-                    Compétences
+                    {t.journey}
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/about/parcours"
-                    className="block px-3 lg:px-4 py-2 text-xs lg:text-sm text-gray-700 dark:text-gray-200 hover:text-[#D5B7AD] hover:text-xl dark:hover:text-amber-400 hover:bg-gray-100 dark:hover:bg-zinc-700"
+                    href="#projects"
+                    className="block px-3 lg:px-4 py-2 text-xs lg:text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 hover:text-[#D5B7AD] hover:text-xl dark:hover:text-amber-400 dark:hover:bg-zinc-700"
                   >
-                    Parcours
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/about/project"
-                    className="block px-3 lg:px-4 py-2 text-xs lg:text-sm text-gray-700 dark:text-gray-200 hover:text-[#D5B7AD] hover:text-xl dark:hover:text-amber-400 hover:bg-gray-100 dark:hover:bg-zinc-700"
-                  >
-                    Projets
+                    {t.projects}
                   </Link>
                 </li>
               </ul>
             </div>
           </div>
 
-          <Link href="/services" 
+          <Link href="#services" 
           className="text-gray-500 dark:text-gray-300 hover:text-[#D5B7AD] hover:text-xl dark:hover:text-amber-400 transition text-sm lg:text-base xl:text-lg font-medium flex-shrink-0">
-            Services
+            {t.services}
           </Link>
-          <Link href="/contact" 
+          <Link href="#contact" 
           className="text-gray-500 dark:text-gray-300 hover:text-[#D5B7AD] hover:text-xl dark:hover:text-amber-400 transition text-sm lg:text-base xl:text-lg font-medium flex-shrink-0">
-            Contact
+            {t.contact}
           </Link>
           </div>
 
@@ -145,11 +139,11 @@ export default function RootLayout({
           <div className="md:hidden bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-gray-700 overflow-hidden">
             <div className="px-3 sm:px-4 py-2 space-y-1 sm:space-y-2">
               <Link
-                href="/accueil"
+                href="#"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block py-2 px-2 text-gray-500 dark:text-gray-300 hover:text-[#D5B7AD] transition text-sm sm:text-base font-medium rounded-md hover:bg-gray-50 dark:hover:bg-zinc-800"
               >
-                Accueil
+                {t.home}
               </Link>
               
               <div className="space-y-1">
@@ -159,43 +153,36 @@ export default function RootLayout({
                 </div>
                 <div className="pl-3 sm:pl-4 space-y-1">
                   <Link
-                    href="/about/skills"
+                    href="#parcours"
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="block py-1 px-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-[#D5B7AD] transition rounded-md hover:bg-gray-50 dark:hover:bg-zinc-800"
                   >
-                    Compétences
+                    {t.journey}
                   </Link>
                   <Link
-                    href="/about/parcours"
+                    href="#projects"
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="block py-1 px-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-[#D5B7AD] transition rounded-md hover:bg-gray-50 dark:hover:bg-zinc-800"
                   >
-                    Parcours
-                  </Link>
-                  <Link
-                    href="/about/project"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block py-1 px-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-[#D5B7AD] transition rounded-md hover:bg-gray-50 dark:hover:bg-zinc-800"
-                  >
-                    Projets
+                    {t.projects}
                   </Link>
                 </div>
               </div>
 
               <Link
-                href="/services"
+                href="#services"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block py-2 px-2 text-gray-500 dark:text-gray-300 hover:text-[#D5B7AD] transition text-sm sm:text-base font-medium rounded-md hover:bg-gray-50 dark:hover:bg-zinc-800"
               >
-                Services
+                {t.services}
               </Link>
               
               <Link
-                href="/contact"
+                href="#contact"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block py-2 px-2 text-gray-500 dark:text-gray-300 hover:text-[#D5B7AD] transition text-sm sm:text-base font-medium rounded-md hover:bg-gray-50 dark:hover:bg-zinc-800"
               >
-                Contact
+                {t.contact}
               </Link>
             </div>
           </div>

@@ -13,6 +13,20 @@ import { Button } from '@/components/ui/button'
 
 export default function ThemeToggle() {
   const { setTheme, theme } = useTheme()
+  const [mounted, setMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Évite l’hydration mismatch : rend rien avant montage
+  if (!mounted) {
+    return (
+      <Button variant="outline" size="icon">
+        <Laptop className="h-5 w-5" />
+      </Button>
+    )
+  }
 
   return (
     <DropdownMenu>
@@ -44,3 +58,4 @@ export default function ThemeToggle() {
     </DropdownMenu>
   )
 }
+

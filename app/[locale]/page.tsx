@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import CarrouselInfini from '@/components/CarrouselInfini';
 import { Button } from '@/components/ui/button';
 import CarrouselEmpile from '@/components/CarrouselEmpile';
-import { Badge, Download, Mail } from 'lucide-react';
+import { Badge, Download, Mail, Code, Smartphone, BarChart2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Lottie from 'lottie-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -14,35 +14,19 @@ import ProjectsSection from '@/components/ProjetsSection';
 import ServicesSection from '@/components/ServicesSection';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
+import { pageTexts } from '@/locales/page';
 
 type Props = {
   params: { locale: string }
 }
 
 export default function Page({ params }: Props) {
+  const t = pageTexts[params.locale as keyof typeof pageTexts] || pageTexts.fr;
   const [typedText, setTypedText] = useState("")
-  const diplomas = [
-    { id: 1, title: "Attestation React", image: "/certifs/hacker.png" },
-    { id: 2, title: "Diplôme Licence", image: "/certifs/calculator.png" },
-    { id: 3, title: "Certificat Laravel", image: "/certifs/balls-sports.png" },
-    // Ajoute ici tes autres certificats/images
-  ];
-
-  const [index, setIndex] = useState(0);
-
-  const prev = () => {
-    setIndex((prevIndex) => (prevIndex === 0 ? diplomas.length - 1 : prevIndex - 1));
-  };
-
-  const next = () => {
-    setIndex((prevIndex) => (prevIndex === diplomas.length - 1 ? 0 : prevIndex + 1));
-  };
-
-  const current = diplomas[index];
 
   // Logique pour taper le texte mot par mot
   useEffect(() => {
-    const fullText = "Giovanni développeur fullstack";
+    const fullText = t.hero.title;
     const words = fullText.split(" ");
     let currentWordIndex = 0;
     let currentCharIndex = 0;
@@ -113,7 +97,7 @@ export default function Page({ params }: Props) {
                 className='ml-0 lg:ml-10 w-full lg:w-100 text-center lg:text-left px-2 sm:px-4 lg:px-0'
               >
                 <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mb-2 sm:mb-3 w-max mx-auto lg:mx-0">
-                  <span className={`dark:text-white text-gray-700`}>Bonjour, je suis<br/></span>
+                  <span className={`dark:text-white text-gray-700`}>{t.hero.greeting}<br/></span>
                   <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                     {typedText}
                     <span className="animate-pulse">|</span>
@@ -125,8 +109,7 @@ export default function Page({ params }: Props) {
                   transition={{ duration: 0.6, delay: 1.2 }}
                   className={`text-xs sm:text-sm md:text-base lg:text-lg mb-4 sm:mb-6 lg:mb-8 dark:text-gray-300 text-gray-600 max-w-lg w-full lg:w-max mx-auto lg:mx-0`}
                 >
-                  Je crée des expériences web modernes et performantes avec les dernières technologies. Passionné par
-                  l'innovation et la qualité du code.
+                  {t.hero.description}
                 </motion.p>
                 <motion.div
   initial={{ opacity: 0, y: 20 }}
@@ -136,24 +119,25 @@ export default function Page({ params }: Props) {
 >
   <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }} className="w-full sm:w-auto">
     <Button
-      size="lg"
-      className="bg-gradient-to-r from-blue-600 to-purple-600 transition-transform duration-200 cursor-pointer"
+      className="bg-gradient-to-r from-blue-600 to-purple-600 transition-transform duration-200 md:cursor-pointer md:scale-105"
     >
-      <Mail className="mr-2 h-4 w-4" />
-      Me Contacter
+      <Mail className="mr-2 h-4 w-4"/>
+      {t.hero.contactButton}
     </Button>
   </motion.div>
 
-  <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }} className="w-full sm:w-auto">
-    <Button
-      variant="outline"
-      size="lg"
-      className="bg-gradient-to-r cursor-pointer from-white to-purple-600 hover:from-blue-700 hover:to-purple-700 dark:from-blue-500 dark:to-purple-500 dark:hover:from-blue-600 dark:hover:to-purple-600 text-xs sm:text-sm md:text-base px-3 sm:px-4 py-2 sm:py-3 transition-transform duration-200"
+  <motion.button
+      whileHover={{ scale: 1.05 }}
+      transition={{ duration: 0.2 }}
+      className="bg-gradient-to-r from-white to-purple-600 hover:from-blue-700 hover:to-purple-700 
+                 dark:from-blue-500 dark:to-purple-500 dark:hover:from-blue-600 dark:hover:to-purple-600
+                 text-xs sm:text-sm md:text-base px-3 sm:px-4 py-2 sm:py-3 
+                 flex items-center rounded-md font-medium shadow-md md:cursor-pointer md:scale-105"
+      onClick={() => console.log("Bouton cliqué")}
     >
       <Download className="mr-2 h-4 w-4" />
-      Télécharger CV
-    </Button>
-  </motion.div>
+      {t.hero.downloadCV}
+    </motion.button>
 </motion.div>
 
               </motion.div>
@@ -165,7 +149,7 @@ export default function Page({ params }: Props) {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ duration: 0.5, delay: 0.5 }}
-                  className="bg-[#D5B7AD] w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 xl:w-60 xl:h-60 mx-auto lg:mx-0 px-2 sm:px-4 lg:px-8 rounded-full overflow-hidden shadow-2xl border-2 sm:border-4 border-white dark:border-gray-800"
+                  className="bg-[#D5B7AD] w-32 h-32 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 xl:w-60 xl:h-60 mx-auto lg:mx-0 px-2 sm:px-4 lg:px-8 rounded-full overflow-hidden shadow-2xl border-2 sm:border-4 border-white dark:border-gray-800"
                 >
                   <img src="/sary.png" alt="Image" width={256}
                     height={256}
@@ -193,7 +177,7 @@ export default function Page({ params }: Props) {
         transition={{ duration: 1 }}
       >
         {/* Section content */}
-        <section className="px-2 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+        <section id='about' className="px-2 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
   <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 xl:gap-12 items-center">
     
     {/* Titre placé tout en haut sur mobile */}
@@ -205,7 +189,7 @@ export default function Page({ params }: Props) {
       viewport={{ once: true }}
       className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-gray-600 to-pink-400 bg-clip-text text-transparent leading-tight mb-3 sm:mb-4 text-center"
     >
-      À propos de moi
+      {t.about.title}
     </motion.h1>
 
     {/* Colonne texte */}
@@ -217,7 +201,7 @@ export default function Page({ params }: Props) {
         viewport={{ once: true }}
         className="text-sm sm:text-base md:text-lg text-gray-700 dark:text-gray-200 leading-relaxed mb-3 sm:mb-4 text-center lg:text-left"
       >
-        Je suis Giovanni, passionné par le développement web moderne et l'expérience utilisateur. J'aime concevoir des interfaces élégantes et performantes avec <strong>React</strong> et <strong>Next.js</strong>.
+        {t.about.description}
       </motion.p>
       {animationData && (
         <Lottie animationData={animationData} loop className="w-full max-w-md h-auto mx-auto lg:mx-0" />
@@ -236,15 +220,10 @@ export default function Page({ params }: Props) {
           <CardContent className="p-3 sm:p-4 md:p-6">
             <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-purple-700 dark:text-purple-300 mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
               <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-purple-500 dark:bg-purple-300 rounded-full"></div>
-              Mon objectif
+              {t.about.goal.title}
             </h3>
             <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-700 dark:text-gray-200 leading-relaxed font-light">
-              Je recherche des opportunités en{" "}
-              <span className="font-semibold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
-                télétravail
-              </span>{" "}
-              pour renforcer mes compétences, collaborer sur des projets innovants et évoluer en tant que développeur
-              fullstack.
+              {t.about.goal.description}
             </p>
           </CardContent>
         </Card>
@@ -259,10 +238,10 @@ export default function Page({ params }: Props) {
           <CardContent className="p-3 sm:p-4 md:p-6">
             <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-purple-700 dark:text-purple-300 mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
               <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-purple-500 dark:bg-purple-300 rounded-full"></div>
-              Mes compétences
+              {t.about.skills.title}
             </h3>
             <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-700 dark:text-gray-200 leading-relaxed font-light">
-              Ma stack principale repose sur JavaScript / TypeScript, avec des frameworks comme React, Next.js, React Native pour le front-end, et Laravel (PHP) ou Node.js pour le back-end. Je maîtrise aussi les bases de données comme MySQL et SQLite, et j'utilise Git & GitHub au quotidien pour le versionnement.
+              {t.about.skills.description}
             </p>
           </CardContent>
         </Card>
@@ -272,7 +251,7 @@ export default function Page({ params }: Props) {
 </section>
 
       </motion.div>
-      <section className="px-2 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 dark:bg-black">
+      <section id='parcours' className="px-2 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 dark:bg-black">
     <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:gap-8 items-center">
       
       {/* Texte animé à gauche */}
@@ -282,50 +261,73 @@ export default function Page({ params }: Props) {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold bg-gradient-to-r from-gray-600 to-pink-400 dark:from-gray-300 dark:to-pink-300 bg-clip-text text-transparent leading-tight mb-3 sm:mb-4 text-center">Mon parcours</h1>
+        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold bg-gradient-to-r from-gray-600 to-pink-400 dark:from-gray-300 dark:to-pink-300 bg-clip-text text-transparent leading-tight mb-3 sm:mb-4 text-center">
+          {t.journey.title}
+        </h1>
         <AcademicTimeline/>
       </motion.div>
       </div>
   </section>
-  <section className="bg-gray-50 dark:bg-gray-800">
+  <section id='projects' className="bg-gray-50 dark:bg-gray-800">
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.3 }}
       viewport={{ once: true }}
     >
-      <ProjectsSection/>
+      <ProjectsSection 
+        title={t.projects.title}
+        projects={[...t.projects.projects]}
+        code={t.projects.code}
+        demo={t.projects.demo}
+      />
     </motion.div>
   </section>
-  <section className="bg-white dark:bg-gray-900">
+  <section id='services' className="bg-white dark:bg-gray-900">
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.4 }}
       viewport={{ once: true }}
     >
-      <ServicesSection/>
+      <ServicesSection 
+        title={t.services.title}
+        services={t.services.services.map((service, index) => ({
+          ...service,
+          icon: index === 0 ? <Code className="w-8 h-8 text-[#D5B7AD]" /> :
+                 index === 1 ? <Smartphone className="w-8 h-8 text-[#D5B7AD]" /> :
+                 <BarChart2 className="w-8 h-8 text-[#D5B7AD]" />
+        }))}
+      />
     </motion.div>
   </section>
-  <section className="bg-gray-50 dark:bg-gray-800">
+  <section id='contact' className="bg-gray-50 dark:bg-gray-800">
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.5 }}
       viewport={{ once: true }}
     >
-      {/*test oe mande ve sa tsia*/} 
-      <Contact/>
+      <Contact 
+        title={t.contact.title}
+        subtitle={t.contact.subtitle}
+        description={t.contact.description}
+        form={t.contact.form}
+        info={t.contact.info}
+      />
     </motion.div>
   </section>
-  <section className="bg-gray-900 dark:bg-black">
+  <section id='footer' className="bg-gray-900 dark:bg-black">
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.6 }}
       viewport={{ once: true }}
     >
-      <Footer/>
+      <Footer 
+        copyright={t.footer.copyright}
+        links={t.footer.links}
+      />
     </motion.div>
   </section>
     </div>

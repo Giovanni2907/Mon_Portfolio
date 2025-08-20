@@ -42,3 +42,6 @@ next-env.d.ts
 
 # local: ignore embedded repo directory
 gh-cli/
+
+# local: ignore legacy portfolio directory
+Gio_Portfolio/
